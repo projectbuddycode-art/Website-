@@ -2155,6 +2155,7 @@ body.modal-open {
 .project-brief-modal {
   position: fixed;
   inset: 0;
+  min-height: 100vh;
   z-index: 100;
   display: grid;
   place-items: center;

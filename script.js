@@ -140,6 +140,10 @@ function projectBriefPayload() {
 function initProjectBrief() {
   if (!projectBriefModal || !projectBriefForm) return;
 
+  if (projectBriefModal.parentElement !== document.body) {
+    document.body.appendChild(projectBriefModal);
+  }
+
   const openModal = () => {
     projectBriefModal.classList.add('is-open');
     projectBriefModal.hidden = false;
@@ -300,6 +304,7 @@ function initProjectBrief() {
     const trigger = target?.closest('[data-project-trigger], a[href="#projectBriefModal"]');
     if (!trigger) return;
     if (trigger.tagName.toLowerCase() === 'a' && trigger.getAttribute('href') !== '#projectBriefModal') return;
+    if (event.defaultPrevented) return;
     openBrief(event, trigger);
   });
   closeButtons.forEach((button) => button.addEventListener('click', closeBrief));
