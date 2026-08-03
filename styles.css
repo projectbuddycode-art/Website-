@@ -2155,7 +2155,6 @@ body.modal-open {
 .project-brief-modal {
   position: fixed;
   inset: 0;
-  min-height: 100vh;
   z-index: 100;
   display: grid;
   place-items: center;
@@ -2183,11 +2182,12 @@ body.modal-open {
 
 .project-brief-shell {
   position: relative;
-  width: min(980px, 100%);
-  max-height: min(740px, calc(100vh - 2rem));
+  width: min(1040px, calc(100vw - 64px));
+  height: min(760px, calc(100dvh - 48px));
+  max-height: calc(100dvh - 48px);
   display: grid;
-  grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr);
-  border-radius: 24px;
+  grid-template-columns: 0.3fr 0.7fr;
+  border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.82);
   background:
@@ -2197,13 +2197,12 @@ body.modal-open {
   background-size: 32px 32px;
   box-shadow: 0 28px 84px rgba(16, 33, 59, 0.18);
   opacity: 0;
-  transform: translateY(24px) scale(0.985);
-  transition: opacity 260ms ease, transform 260ms ease;
+  /* avoid transform transitions to prevent content re-centering while typing */
+  transition: opacity 220ms ease;
 }
 
 .project-brief-modal.is-open .project-brief-shell {
   opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
 .project-brief-close {
@@ -2231,6 +2230,78 @@ body.modal-open {
   background:
     radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.22), transparent 32%),
     linear-gradient(150deg, #10213b 0%, #1265f3 100%);
+}
+
+/* Form layout: header, progress, scrollable steps, sticky actions */
+.project-brief-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 1.6rem;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(26px) saturate(142%);
+  -webkit-backdrop-filter: blur(26px) saturate(142%);
+}
+
+.project-brief-form .brief-header { flex: 0 0 auto; }
+.project-brief-form .brief-progress { flex: 0 0 auto; }
+.project-brief-form .brief-status { flex: 0 0 auto; }
+.project-brief-form .brief-steps-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.brief-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border-top: 1px solid rgba(16,33,59,0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.84));
+  backdrop-filter: blur(8px);
+  min-height: 72px;
+}
+
+.project-brief-form { padding-bottom: 88px; }
+
+.brief-textarea textarea { min-height: 140px; max-height: 300px; resize: vertical; overflow: auto; }
+
+.brief-field-error { margin: 0.5rem 0 0; color: #b42318; font-size: 0.9rem; }
+
+/* Compact header typography */
+.brief-header h2 { font-size: clamp(52px, 5vw, 76px); line-height: 0.95; margin-bottom: 0.4rem; }
+.brief-header span { font-size: 16px; line-height: 1.5; }
+
+/* Reduce left panel use on smaller screens */
+@media (max-width: 900px) {
+  .project-brief-shell { grid-template-columns: 1fr; }
+  .project-brief-aside { display: none; }
+  .project-brief-shell { width: calc(100vw - 24px); height: auto; max-height: calc(100dvh - 24px); }
+}
+
+@media (max-width: 767px) {
+  .project-brief-modal { padding: 0; }
+  .project-brief-shell {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    grid-template-columns: 1fr;
+  }
+  .project-brief-form { padding: 1rem; padding-bottom: calc(env(safe-area-inset-bottom) + 76px); }
+  .brief-header h2 { font-size: clamp(36px, 11vw, 46px); line-height: 0.98; text-align: center; }
+  .brief-header span { text-align: center; max-width: 34rem; margin-inline: auto; }
+  .brief-actions { padding-left: 1rem; padding-right: 1rem; }
+  .project-brief-close { top: calc(env(safe-area-inset-top) + 12px); }
 }
 
 .project-brief-aside p,

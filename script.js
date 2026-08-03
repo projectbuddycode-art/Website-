@@ -288,7 +288,11 @@ function initProjectBrief() {
 
   function showStep(index) {
     currentStep = Math.max(0, Math.min(index, steps.length - 1));
-    steps.forEach((step, stepIndex) => step.classList.toggle('active', stepIndex === currentStep));
+    steps.forEach((step, stepIndex) => {
+      step.classList.toggle('active', stepIndex === currentStep);
+      // ensure step content is revealed but not changing shell height
+      if (stepIndex === currentStep) step.hidden = false; else step.hidden = true;
+    });
     progress.forEach((step, stepIndex) => step.classList.toggle('active', stepIndex === currentStep));
     if (stepSlider) stepSlider.value = String(currentStep);
     prevButton.hidden = currentStep === 0;
@@ -296,6 +300,8 @@ function initProjectBrief() {
     submitButton.hidden = currentStep !== steps.length - 1;
     setStatus('');
     if (currentStep === steps.length - 1) updateSummary();
+    const containerScroll = projectBriefForm.querySelector('.brief-steps-scroll');
+    if (containerScroll) containerScroll.scrollTop = 0;
     const firstField = steps[currentStep].querySelector('input, select, textarea, button');
     if (firstField) firstField.focus({ preventScroll: true });
   }
