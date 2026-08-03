@@ -2524,6 +2524,76 @@ section {
 /* Ensure footer has breathing room from preceding content */
 .global-footer { margin-top: var(--space-64); }
 
+/* ----------------------
+   Visual primitives: reusable components for cinematic system visuals
+   ---------------------- */
+
+/* Base for floating glass panels */
+.system-panel {
+  --panel-bg: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(245,249,255,0.72));
+  --panel-border: rgba(18,101,243,0.08);
+  display: block;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  box-shadow: 0 8px 30px rgba(16,33,59,0.06);
+  backdrop-filter: blur(6px) saturate(120%);
+  padding: var(--space-16);
+  color: var(--text);
+}
+
+/* Smaller system nodes */
+.system-node {
+  display:inline-grid;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+  background: rgba(18,101,243,0.04);
+  border-radius:8px;
+  padding:8px 12px;
+  color:var(--deep-navy);
+  font-weight:600;
+  box-shadow: 0 6px 20px rgba(16,33,59,0.04);
+}
+
+/* Thin connector lines (SVG-friendly) */
+.system-connector { stroke: rgba(18,101,243,0.24); stroke-width:1.5; stroke-linecap:round; }
+
+/* Data stream visual */
+.data-stream { position:relative; overflow:visible; }
+.data-stream .dot { width:6px; height:6px; background:var(--pb-blue); border-radius:50%; box-shadow:0 6px 18px rgba(18,101,243,0.12); }
+
+/* Floating decorative objects */
+.floating-object { position:absolute; pointer-events:none; transform:translateZ(0); }
+.floating-object.small { width:8px; height:8px; border-radius:2px; background:rgba(18,101,243,0.16); }
+.floating-object.cube { width:12px; height:12px; background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(230,240,255,0.9)); border-radius:4px; box-shadow:0 6px 24px rgba(16,33,59,0.08); }
+
+/* Visual stage: centers large visuals with controlled max-width */
+.visual-stage { width:100%; max-width:var(--visual-max); margin-inline:auto; padding-inline:var(--page-gutter); box-sizing:border-box; position:relative; }
+
+/* Subtle environment grid */
+.visual-grid { position:absolute; inset:0; background-image: radial-gradient(circle at 20% 12%, rgba(18,101,243,0.02), transparent 20%); opacity:0.9; pointer-events:none; }
+
+/* Motion utilities */
+@media (prefers-reduced-motion: no-preference) {
+  .visual-float { animation: floaty 6s ease-in-out infinite; }
+  @keyframes floaty { 0% { transform: translateY(0) translateZ(0); } 50% { transform: translateY(-6px) translateZ(0); } 100% { transform: translateY(0) translateZ(0); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .visual-float { animation: none !important; }
+}
+
+/* Ensure visuals stack behind hero text when needed */
+.hero-visuals { position:absolute; inset:0; z-index:0; pointer-events:none; }
+.inner-hero > * { position:relative; z-index:1; }
+
+/* Responsive: simplify visuals on small screens */
+@media (max-width:767px) {
+  .visual-stage { padding-inline: var(--space-16); }
+  .visual-float { transform:none !important; }
+  .hero-visuals { position:relative; margin-top: var(--space-24); }
+}
+
 .inner-hero h1 {
   margin: 0 0 1.3rem;
   max-width: 1000px;

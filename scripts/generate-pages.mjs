@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const siteUrl = 'https://www.projectbuddy.co.in';
+import { createConnectorSVG, moduleHTML } from './visuals.mjs';
 
 const services = [
   {
@@ -293,7 +294,16 @@ writeRoute('services', layout({
   description: 'Explore Project Buddy services for custom software development, enterprise applications, AI automation, business process automation, web apps, mobile apps and system integration.',
   path: '/services',
   schema: breadcrumb('/services', 'Services'),
-  body: `<section class="inner-hero"><div class="hero-inner"><p class="section-label">PROJECT BUDDY / SERVICES</p><h1>Software engineering services for working business systems.</h1><p>Project Buddy designs and develops custom software, enterprise applications, AI automation and integrated digital platforms for businesses building new products or modernizing operations.</p></div></section><section class="inner-grid">${services.map((service) => `<article class="inner-card"><p>${service.title}</p><h2><a href="/services/${service.slug}">${service.title}</a></h2><p>${service.description}</p><a class="card-link" href="/services/${service.slug}">Explore service →</a></article>`).join('')}</section>`
+  body: `<section class="inner-hero"><div class="hero-inner"><p class="section-label">PROJECT BUDDY / SERVICES</p><h1>Software engineering services for working business systems.</h1><p>Project Buddy designs and develops custom software, enterprise applications, AI automation and integrated digital platforms for businesses building new products or modernizing operations.</p></div>
+    <div class="hero-visuals visual-stage" aria-hidden>
+      ${moduleHTML('Business Software','Internal Platform')}
+      ${moduleHTML('Automation','Workflow & Triggers')}
+      ${moduleHTML('Data','Integration & Dashboards')}
+      ${moduleHTML('Integration','APIs & Bridges')}
+      ${createConnectorSVG(820,160)}
+    </div>
+  </section>
+  <section class="inner-grid">${services.map((service) => `<article class="inner-card"><p>${service.title}</p><h2><a href="/services/${service.slug}">${service.title}</a></h2><p>${service.description}</p><a class="card-link" href="/services/${service.slug}">Explore service →</a></article>`).join('')}</section>`
 }));
 
 for (const service of services) {
