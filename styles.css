@@ -2493,6 +2493,27 @@ body.inner-page h1 {
 .container-standard  { max-width: var(--standard-max);  margin-inline: auto; padding-inline: var(--space-24); }
 .container-visual    { max-width: var(--visual-max);    margin-inline: auto; padding-inline: var(--space-24); }
 
+/* Global section rhythm using spacing tokens */
+section {
+  padding-block: var(--space-64);
+}
+
+@media (max-width: 900px) {
+  section { padding-block: var(--space-32); }
+}
+
+/* Standardize card padding and spacing */
+.inner-card {
+  padding: var(--space-24);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--canvas);
+}
+
+/* Footer spacing normalization */
+.global-footer-shell { padding: var(--space-48) var(--space-24); }
+.global-footer-feature { gap: var(--space-24); }
+
 .inner-hero h1 {
   margin: 0 0 1.3rem;
   max-width: 1000px;

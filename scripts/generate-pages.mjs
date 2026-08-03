@@ -177,6 +177,30 @@ const projects = [
 
 function pageHead({ title, description, path, schema }) {
   const canonical = `${siteUrl}${path}`;
+  // Base structured data for the site
+  const organization = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Project Buddy',
+    url: siteUrl,
+    logo: `${siteUrl}/logo.jpg`,
+    sameAs: ['https://www.linkedin.com/in/shivamdubey-pb']
+  };
+
+  const website = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Project Buddy',
+    url: siteUrl,
+    description
+  };
+
+  const ld = [organization, website];
+  if (schema) {
+    if (Array.isArray(schema)) ld.push(...schema);
+    else ld.push(schema);
+  }
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -198,7 +222,7 @@ function pageHead({ title, description, path, schema }) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
-  <script type="application/ld+json">${JSON.stringify(schema)}</script>
+  <script type="application/ld+json">${JSON.stringify(ld)}</script>
 </head>`;
 }
 
@@ -273,19 +297,36 @@ writeRoute('services', layout({
 }));
 
 for (const service of services) {
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    provider: { '@type': 'Organization', name: 'Project Buddy', url: siteUrl },
+    description: service.description
+  };
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What does this service include?', acceptedAnswer: { '@type': 'Answer', text: `${service.title} includes: ${service.builds.join(', ')}.` } },
+      { '@type': 'Question', name: 'Who is this service for?', acceptedAnswer: { '@type': 'Answer', text: service.suitable } }
+    ]
+  };
+
   writeRoute(`services/${service.slug}`, layout({
     title: `${service.title} | Project Buddy`,
     description: service.description,
     path: `/services/${service.slug}`,
-    schema: {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      name: service.title,
-      provider: { '@type': 'Organization', name: 'Project Buddy', url: siteUrl },
-      description: service.description
-    },
+    schema: [serviceSchema, faqSchema],
     body: `<section class="inner-hero"><div class="hero-inner"><p class="section-label">SERVICE / ${service.title.toUpperCase()}</p><h1>${service.title}</h1><p>${service.description}</p><a class="button primary" href="#projectBriefModal" data-project-trigger>Start a Project →</a></div></section>
-    <section class="answer-section"><h2>What does Project Buddy build?</h2>${list(service.builds)}<h2>Who is it suitable for?</h2><p>${service.suitable}</p><h2>Operational problems this can address</h2>${list(service.problems)}<h2>Systems Project Buddy can integrate</h2>${list(service.integrations)}<h2>How Project Buddy approaches the project</h2><p>We begin with business understanding and process mapping, define the system architecture, engineer the software, connect required integrations, deploy the system and optimize it around real usage.</p><h2>Relevant Project Buddy projects</h2>${list(service.projects.map((name) => `<a href="/work/${projects.find((project) => project.name === name)?.slug || ''}">${name}</a>`))}</section>`
+    <section class="answer-section container-standard"><h2>Overview</h2><p>${service.description} Project Buddy typically builds ${service.builds.join(', ')} to solve operational problems such as ${service.problems.join(', ')}.</p>
+    <h2>Who it's for</h2><p>${service.suitable}</p>
+    <h2>What we deliver</h2><p>Typical deliverables include scoped architecture, production-ready code, integrations (${service.integrations.join(', ')}), testing and deployment. Typical timelines vary by scope, most engagements begin with a 4–8 week discovery and prototype.</p>
+    <h2>How we approach the work</h2><p>We begin with business understanding, map the process, define the architecture, implement the system, integrate required services and hand over a supported production system. We prioritize operational fit and measurable outcomes.</p>
+    <h2>Technologies & integrations</h2>${list(service.integrations)}
+    <h2>Relevant projects</h2>${list(service.projects.map((name) => `<a href="/work/${projects.find((project) => project.name === name)?.slug || ''}">${name}</a>`))}
+    <section class="faq"><h2>Frequently asked questions</h2><div class="qa"><h3>What does this service include?</h3><p>${service.title} typically includes: ${service.builds.join(', ')}.</p></div><div class="qa"><h3>Who is this service for?</h3><p>${service.suitable}</p></div></section></section>`
   }));
 }
 
@@ -298,19 +339,39 @@ writeRoute('work', layout({
 }));
 
 for (const project of projects) {
+  const projectSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.name,
+    creator: { '@type': 'Organization', name: 'Project Buddy', url: siteUrl },
+    description: project.summary
+  };
+
+  const projectFaq = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'What problem did this project solve?', acceptedAnswer: { '@type': 'Answer', text: project.problem } },
+      { '@type': 'Question', name: 'What was the outcome?', acceptedAnswer: { '@type': 'Answer', text: project.outcome } }
+    ]
+  };
+
   writeRoute(`work/${project.slug}`, layout({
     title: `${project.name} | Project Buddy Work`,
     description: project.summary,
     path: `/work/${project.slug}`,
-    schema: {
-      '@context': 'https://schema.org',
-      '@type': 'CreativeWork',
-      name: project.name,
-      creator: { '@type': 'Organization', name: 'Project Buddy', url: siteUrl },
-      description: project.summary
-    },
+    schema: [projectSchema, projectFaq],
     body: `<section class="inner-hero"><div class="hero-inner"><p class="section-label">PROJECT / ${project.type.toUpperCase()}</p><h1>${project.name}</h1><p>${project.summary}</p><a class="button primary" href="#projectBriefModal" data-project-trigger>Start a Similar Project →</a></div></section>
-    <section class="answer-section"><h2>The Problem</h2><p>${project.problem}</p><h2>The System</h2><p>${project.system}</p><h2>Architecture</h2>${list(project.architecture)}<h2>Capabilities</h2>${list(project.capabilities)}<h2>Technology</h2>${list(project.technology)}<h2>How It Works</h2><p>${project.workflow}</p><h2>Engineering</h2><p>${project.engineering}</p><h2>Outcome</h2><p>${project.outcome}</p></section>`
+    <section class="answer-section container-standard"><h2>Overview</h2><p>${project.summary} This project addressed: ${project.problem} and delivered: ${project.outcome}.</p>
+    <h2>The Problem</h2><p>${project.problem}</p>
+    <h2>The System</h2><p>${project.system}</p>
+    <h2>Architecture</h2>${list(project.architecture)}
+    <h2>Capabilities</h2>${list(project.capabilities)}
+    <h2>Technology</h2>${list(project.technology)}
+    <h2>How It Works</h2><p>${project.workflow}</p>
+    <h2>Engineering</h2><p>${project.engineering}</p>
+    <h2>Outcome</h2><p>${project.outcome}</p>
+    <section class="faq"><h2>Frequently asked questions</h2><div class="qa"><h3>What problem did this project solve?</h3><p>${project.problem}</p></div><div class="qa"><h3>What was the outcome?</h3><p>${project.outcome}</p></div></section></section>`
   }));
 }
 
