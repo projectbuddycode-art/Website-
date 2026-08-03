@@ -5,7 +5,6 @@ const required = [
   'index.html',
   'styles.css',
   'script.js',
-  'api/project-inquiry.js',
   'robots.txt',
   'sitemap.xml',
   'services/index.html',

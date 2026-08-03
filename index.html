@@ -44,7 +44,9 @@
             "name": "Project Buddy",
             "url": "https://www.projectbuddy.co.in/",
             "description": "Project Buddy is a software engineering company building custom software, enterprise applications, AI automation and digital platforms around real business operations.",
-            "logo": "https://www.projectbuddy.co.in/logo.jpg"
+            "logo": "https://www.projectbuddy.co.in/logo.jpg",
+            "email": "info@projectbuddy.co.in",
+            "sameAs": ["https://www.linkedin.com/in/shivamdubey-pb"]
           },
           {
             "@type": "WebSite",
@@ -657,101 +659,24 @@
         </section>
       </main>
 
-      <div class="project-brief-modal" id="projectBriefModal" role="dialog" aria-modal="true" aria-labelledby="project-brief-title" hidden>
+      <div class="project-brief-modal" id="projectBriefModal" role="dialog" aria-modal="true" aria-labelledby="contact-panel-title" hidden>
         <div class="project-brief-backdrop" data-project-close></div>
         <div class="project-brief-shell" role="document">
-          <button class="project-brief-close" type="button" aria-label="Close project brief" data-project-close>&times;</button>
-          <div class="project-brief-aside" aria-hidden="true">
-            <p>PROJECT BUDDY / START A PROJECT</p>
-            <div class="brief-system-animation">
-              <span>REQUEST</span>
-              <i></i>
-              <span>RECEIVED</span>
-              <i></i>
-              <span>REVIEW</span>
+          <button class="project-brief-close" type="button" aria-label="Close contact panel" data-project-close>&times;</button>
+          <div class="project-brief-panel">
+            <p class="project-brief-kicker">PROJECT BUDDY / START A PROJECT</p>
+            <h2 id="contact-panel-title">Let's discuss what you're building.</h2>
+            <p class="project-brief-copy">Have a project, system or operational challenge in mind? Send us the requirements directly or connect with the founder.</p>
+            <div class="project-brief-actions">
+              <a class="project-brief-button primary" href="mailto:info@projectbuddy.co.in?subject=Project%20Inquiry%20%E2%80%94%20Project%20Buddy&amp;body=Hi%20Project%20Buddy%2C%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AProject%20%2F%20requirement%3A">Email Project Buddy →</a>
+              <a class="project-brief-button secondary" href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
+            </div>
+            <p class="project-brief-support">For project requirements, partnerships and business enquiries.</p>
+            <div class="project-brief-contact-row" aria-label="Direct contact options">
+              <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
+              <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Shivam Dubey</a>
             </div>
           </div>
-          <form class="project-brief-form" id="projectBriefForm" novalidate>
-            <input type="text" name="websiteUrl" class="brief-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-            <input type="hidden" name="submittedAt" />
-            <input type="hidden" name="sourcePage" />
-            <input type="hidden" name="landingPage" />
-            <input type="hidden" name="referrer" />
-            <input type="hidden" name="utmSource" />
-            <input type="hidden" name="utmMedium" />
-            <input type="hidden" name="utmCampaign" />
-            <input type="hidden" name="utmContent" />
-            <input type="hidden" name="utmTerm" />
-
-            <header class="brief-header">
-              <p class="eyebrow">PROJECT BUDDY / START A PROJECT</p>
-              <h2 id="project-brief-title">Tell us what you're building.</h2>
-              <span>Share a few details about your project and we'll review the requirements and get back to you.</span>
-            </header>
-
-            <div class="brief-body">
-              <div class="brief-field-grid">
-                <label>Your name *<input type="text" name="name" autocomplete="name" required maxlength="100" /></label>
-                <label>Work Email *<input type="email" name="email" autocomplete="email" required maxlength="254" /></label>
-              </div>
-
-              <div class="brief-field-grid">
-                <label>Company / Organization<input type="text" name="company" autocomplete="organization" maxlength="150" /></label>
-                <label>Phone / WhatsApp<input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" /></label>
-              </div>
-
-              <label>What do you need? *
-                <select name="service" required>
-                  <option value="">Select a service</option>
-                  <option>Custom Software</option>
-                  <option>AI Automation</option>
-                  <option>Web Platform</option>
-                  <option>Mobile Application</option>
-                  <option>Internal Business System</option>
-                  <option>System Integration</option>
-                  <option>Other</option>
-                </select>
-              </label>
-
-              <label class="brief-textarea">Tell us about the project *
-                <textarea name="description" required maxlength="5000" placeholder="What are you trying to build, improve or automate?"></textarea>
-              </label>
-
-              <div class="brief-field-grid">
-                <label>Budget
-                  <select name="budget">
-                    <option>Not sure yet</option>
-                    <option>Under ₹1L</option>
-                    <option>₹1L – ₹5L</option>
-                    <option>₹5L – ₹15L</option>
-                    <option>₹15L+</option>
-                    <option>Enterprise / Let's discuss</option>
-                  </select>
-                </label>
-                <label>Timeline
-                  <select name="timeline">
-                    <option>As soon as possible</option>
-                    <option>1–2 months</option>
-                    <option>3–6 months</option>
-                    <option>6+ months</option>
-                    <option>Exploring</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-
-            <div class="brief-status" role="status" aria-live="polite"></div>
-
-            <div class="brief-success" hidden>
-              <p class="brief-check">Project brief received</p>
-              <h3>Thanks — we'll review the details and get back to you shortly.</h3>
-              <button class="button primary" type="button" data-project-close>Close</button>
-            </div>
-
-            <footer class="brief-actions">
-              <button class="button primary" type="submit" data-brief-submit>Submit Project →</button>
-            </footer>
-          </form>
         </div>
       </div>
 

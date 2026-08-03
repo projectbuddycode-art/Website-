@@ -7,13 +7,11 @@
   "scripts": {
     "generate:pages": "node scripts/generate-pages.mjs",
     "lint": "node scripts/lint-site.mjs",
-    "typecheck": "node --check api/project-inquiry.js && node --check scripts/generate-pages.mjs && node --check scripts/lint-site.mjs && node --check scripts/build-check.mjs",
+    "typecheck": "node --check scripts/generate-pages.mjs && node --check scripts/lint-site.mjs && node --check scripts/build-check.mjs",
     "build": "npm run generate:pages && npm run lint && npm run typecheck && node scripts/build-check.mjs",
     "deploy": "npm run build && vercel --prod"
   },
-  "dependencies": {
-    "resend": "^4.0.1"
-  },
+  "dependencies": {},
   "engines": {
     "node": ">=20"
   }

@@ -205,30 +205,30 @@ function pageHead({ title, description, path, schema }) {
 function nav() {
   return `<nav class="site-nav nav-scrolled" aria-label="Primary navigation">
   <a class="brand" href="/" aria-label="Project Buddy home"><img class="brand-mark" src="/logo.jpg" alt="Project Buddy logo" /><span class="brand-name">Project Buddy</span></a>
-  <div class="nav-links"><a href="/services">Services</a><a href="/#systems">Systems</a><a href="/work">Work</a><a href="/company">Company</a><a href="/privacy-policy">Privacy Policy</a><a href="/terms">Terms</a></div>
+  <div class="nav-links"><a href="/services">Services</a><a href="/#systems">Systems</a><a href="/work">Work</a><a href="/company">Company</a><a href="/privacy-policy">Privacy Policy</a></div>
   <a class="nav-cta" href="#projectBriefModal" data-project-trigger>Start a Project →</a>
 </nav>`;
 }
 
 function modal() {
-  return `<div class="project-brief-modal" id="projectBriefModal" role="dialog" aria-modal="true" aria-labelledby="project-brief-title" hidden>
+  return `<div class="project-brief-modal" id="projectBriefModal" role="dialog" aria-modal="true" aria-labelledby="contact-panel-title" hidden>
   <div class="project-brief-backdrop" data-project-close></div>
   <div class="project-brief-shell" role="document">
-    <button class="project-brief-close" type="button" aria-label="Close project brief" data-project-close>&times;</button>
-    <div class="project-brief-aside" aria-hidden="true"><p>PROJECT BUDDY / START A PROJECT</p><div class="brief-system-animation"><span>REQUEST</span><i></i><span>RECEIVED</span><i></i><span>REVIEW</span></div></div>
-    <form class="project-brief-form" id="projectBriefForm" novalidate>
-      <input type="text" name="websiteUrl" class="brief-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      ${['submittedAt','sourcePage','landingPage','referrer','utmSource','utmMedium','utmCampaign','utmContent','utmTerm'].map((name) => `<input type="hidden" name="${name}" />`).join('')}
-      <header class="brief-header"><p>PROJECT BUDDY / START A PROJECT</p><h2 id="project-brief-title">Tell us what<br />you're building.</h2><span>Share the problem, product or operation you're working on. We'll review the requirements and determine the right next step.</span></header>
-      <div class="brief-progress" aria-label="Project brief progress"><span class="active">01</span><i></i><span>02</span><i></i><span>03</span><i></i><span>04</span><i></i><span>05</span></div><div class="brief-status" role="status" aria-live="polite"></div>
-      <section class="brief-step active" data-step="0"><p class="brief-step-label">01 / ABOUT YOU</p><div class="brief-field-grid"><label>Full Name *<input type="text" name="name" autocomplete="name" required maxlength="100" /></label><label>Work Email *<input type="email" name="email" autocomplete="email" required maxlength="254" /></label><label>Company / Organization<input type="text" name="company" autocomplete="organization" maxlength="150" /></label><label>Phone / WhatsApp<input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" /></label><label class="wide">Website<input type="url" name="website" autocomplete="url" inputmode="url" maxlength="300" placeholder="https://" /></label></div></section>
-      <section class="brief-step" data-step="1"><p class="brief-step-label">02 / WHAT ARE YOU BUILDING?</p><fieldset class="brief-choice-group"><legend>What can we help you build?</legend>${['Custom Software','Enterprise Application','Web Application','Mobile Application','AI Automation','Business Process Automation','System Integration','Software Modernization','SaaS Product','AI Integration','Other'].map((type) => `<label><input type="checkbox" name="projectTypes" value="${type}" /> ${type}</label>`).join('')}</fieldset><label class="brief-textarea">Tell us a little about the project *<small>Share the idea, workflow or problem you want to solve.</small><textarea name="description" required maxlength="5000" placeholder="Describe the product, workflow, operation or automation you're building."></textarea></label></section>
-      <section class="brief-step" data-step="2"><p class="brief-step-label">03 / THE PROJECT</p><label class="brief-textarea">What is the biggest operational or technical challenge?<textarea name="challenge" maxlength="3000"></textarea></label></section>
-      <section class="brief-step" data-step="3"><p class="brief-step-label">04 / PROJECT CONTEXT</p><div class="brief-field-grid"><label>Project Stage<select name="stage" required><option value="">Select stage</option>${['Idea / Planning','Existing System','MVP','In Development','Production System','Modernization / Replacement'].map((item) => `<option>${item}</option>`).join('')}</select></label><label>Timeline<select name="timeline" required><option value="">Select timeline</option>${['As soon as possible','Within 1 month','1-3 months','3-6 months','Flexible'].map((item) => `<option>${item}</option>`).join('')}</select></label><label class="wide">Budget Range<select name="budget" required><option value="">Select budget range</option>${['Prefer to discuss','Under $5,000','$5,000-$15,000','$15,000-$30,000','$30,000-$75,000','$75,000+'].map((item) => `<option>${item}</option>`).join('')}</select></label></div></section>
-      <section class="brief-step" data-step="4"><p class="brief-step-label">05 / SEND BRIEF</p><div class="brief-summary" aria-live="polite"></div><p class="brief-privacy">Your project details are used only to review and respond to your inquiry. <a href="/privacy-policy">Privacy Policy</a></p></section>
-      <section class="brief-success" hidden><p class="brief-step-label">BRIEF / RECEIVED</p><p class="brief-check">Project brief received</p><h2>Your project is<br />in our system.</h2><p>We've received the details and will review the requirements.</p><div class="brief-system-animation success"><span>REQUEST</span><i></i><span>RECEIVED</span><i></i><span>REVIEW</span></div><button class="button primary" type="button" data-project-close>Return to Project Buddy →</button></section>
-      <footer class="brief-actions"><button class="button secondary" type="button" data-brief-prev>Back</button><button class="button primary" type="button" data-brief-next>Next →</button><button class="button primary" type="submit" data-brief-submit hidden>Send Project Brief →</button></footer>
-    </form>
+    <button class="project-brief-close" type="button" aria-label="Close contact panel" data-project-close>&times;</button>
+    <div class="project-brief-panel">
+      <p class="project-brief-kicker">PROJECT BUDDY / START A PROJECT</p>
+      <h2 id="contact-panel-title">Let's discuss what you're building.</h2>
+      <p class="project-brief-copy">Have a project, system or operational challenge in mind? Send us the requirements directly or connect with the founder.</p>
+      <div class="project-brief-actions">
+        <a class="project-brief-button primary" href="mailto:info@projectbuddy.co.in?subject=Project%20Inquiry%20%E2%80%94%20Project%20Buddy&amp;body=Hi%20Project%20Buddy%2C%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AProject%20%2F%20requirement%3A">Email Project Buddy →</a>
+        <a class="project-brief-button secondary" href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
+      </div>
+      <p class="project-brief-support">For project requirements, partnerships and business enquiries.</p>
+      <div class="project-brief-contact-row" aria-label="Direct contact options">
+        <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
+        <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Shivam Dubey</a>
+      </div>
+    </div>
   </div>
 </div>`;
 }
@@ -326,7 +326,7 @@ writeRoute('contact', layout({
   description: 'Start a software, automation or digital platform project with Project Buddy.',
   path: '/contact',
   schema: breadcrumb('/contact', 'Contact'),
-  body: `<section class="inner-hero"><p class="section-label">PROJECT BUDDY / START A PROJECT</p><h1>Tell us what you're building.</h1><p>Share the problem, product or operation you're working on. We'll review the requirements and determine the right next step.</p><a class="button primary" href="#projectBriefModal" data-project-trigger>Open Project Brief →</a></section><section class="answer-section"><h2>How do I start a software project with Project Buddy?</h2><p>Open the project brief, describe the system you need, select the relevant software or automation categories and send the details. Project Buddy will review the requirements and respond through the contact information you provide.</p></section>`
+  body: `<section class="inner-hero"><p class="section-label">PROJECT BUDDY / START A PROJECT</p><h1>Let's discuss what you're building.</h1><p>Have a project, system or operational challenge in mind? Send us the requirements directly or connect with the founder.</p><a class="button primary" href="#projectBriefModal" data-project-trigger>Email Project Buddy →</a></section><section class="answer-section"><h2>How do I start a software project with Project Buddy?</h2><p>Use the direct contact options below to share your requirements, connect on LinkedIn or email Project Buddy directly. We review the requirements and respond through the contact information you provide.</p><p>Connect with Shivam on LinkedIn: <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">www.linkedin.com/in/shivamdubey-pb</a></p><p>Email us at <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>.</p></section>`
 }));
 
 writeRoute('privacy-policy', layout({

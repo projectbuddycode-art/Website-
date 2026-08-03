@@ -16,8 +16,7 @@ const systemNodes = document.querySelectorAll('.system-node');
 const projectItems = document.querySelectorAll('.project-item');
 const projectVisual = document.querySelector('.project-visual');
 const projectDetails = document.querySelectorAll('.project-detail');
-const projectBriefModal = document.getElementById('projectBriefModal');
-const projectBriefForm = document.getElementById('projectBriefForm');
+let projectBriefModal = document.getElementById('projectBriefModal');
 let projectBriefOrigin = null;
 
 function createFooterMarkup() {
@@ -53,6 +52,8 @@ function createFooterMarkup() {
           <p class="footer-group-title">Explore</p>
           <a href="/work">Work</a>
           <a href="/services">Services</a>
+          <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
+          <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
 
@@ -63,7 +64,8 @@ function createFooterMarkup() {
         </div>
         <div class="footer-legal-links">
           <a href="/privacy-policy">Privacy Policy</a>
-          <a href="/terms">Terms</a>
+          <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
+          <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
         <p class="footer-copy">© ${currentYear} Project Buddy.</p>
       </div>
@@ -110,140 +112,87 @@ function trackEvent(name, detail = {}) {
   window.dispatchEvent(new CustomEvent('projectbuddy:event', { detail: { name, ...detail } }));
 }
 
-function projectBriefPayload() {
-  const formData = new FormData(projectBriefForm);
-  return {
-    name: (formData.get('name') || '').trim(),
-    email: (formData.get('email') || '').trim(),
-    company: (formData.get('company') || '').trim(),
-    phone: (formData.get('phone') || '').trim(),
-    service: (formData.get('service') || '').trim(),
-    description: (formData.get('description') || '').trim(),
-    budget: formData.get('budget') || '',
-    timeline: formData.get('timeline') || '',
-    websiteUrl: formData.get('websiteUrl') || '',
-    submittedAt: formData.get('submittedAt') || '',
-    sourcePage: formData.get('sourcePage') || window.location.href,
-    landingPage: formData.get('landingPage') || sessionStorage.getItem('pbLandingPage') || window.location.href,
-    referrer: formData.get('referrer') || document.referrer,
-    utmSource: formData.get('utmSource') || '',
-    utmMedium: formData.get('utmMedium') || '',
-    utmCampaign: formData.get('utmCampaign') || '',
-    utmContent: formData.get('utmContent') || '',
-    utmTerm: formData.get('utmTerm') || ''
-  };
-}
-
 function initProjectBrief() {
-  if (!projectBriefModal || !projectBriefForm) return;
+  if (!projectBriefModal) {
+    projectBriefModal = document.createElement('div');
+    projectBriefModal.id = 'projectBriefModal';
+    projectBriefModal.className = 'project-brief-modal';
+    projectBriefModal.hidden = true;
+    projectBriefModal.setAttribute('role', 'dialog');
+    projectBriefModal.setAttribute('aria-modal', 'true');
+    projectBriefModal.setAttribute('aria-labelledby', 'contact-panel-title');
+    document.body.appendChild(projectBriefModal);
+  }
 
   if (projectBriefModal.parentElement !== document.body) {
     document.body.appendChild(projectBriefModal);
   }
 
-  const openModal = () => {
-    projectBriefModal.classList.add('is-open');
+  projectBriefModal.innerHTML = `
+    <div class="project-brief-backdrop" data-project-close></div>
+    <div class="project-brief-shell" role="document">
+      <button class="project-brief-close" type="button" aria-label="Close contact panel" data-project-close>&times;</button>
+      <div class="project-brief-panel">
+        <p class="project-brief-kicker">PROJECT BUDDY / START A PROJECT</p>
+        <h2 id="contact-panel-title">Let's discuss what you're building.</h2>
+        <p class="project-brief-copy">Have a project, system or operational challenge in mind? Send us the requirements directly or connect with the founder.</p>
+        <div class="project-brief-actions">
+          <a class="project-brief-button primary" href="mailto:info@projectbuddy.co.in?subject=Project%20Inquiry%20%E2%80%94%20Project%20Buddy&amp;body=Hi%20Project%20Buddy%2C%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AProject%20%2F%20requirement%3A">Email Project Buddy →</a>
+          <a class="project-brief-button secondary" href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
+        </div>
+        <p class="project-brief-support">For project requirements, partnerships and business enquiries.</p>
+        <div class="project-brief-contact-row" aria-label="Direct contact options">
+          <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
+          <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Shivam Dubey</a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const openModal = (event = null, origin = null) => {
+    if (event) {
+      event.preventDefault();
+      const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
+      projectBriefOrigin = origin || target?.closest('[data-project-trigger], a[href="#projectBriefModal"]') || null;
+    } else {
+      projectBriefOrigin = null;
+    }
+
     projectBriefModal.hidden = false;
+    projectBriefModal.classList.add('is-open');
     document.body.classList.add('modal-open');
+
+    const focusTarget = projectBriefModal.querySelector('.project-brief-close');
+    window.setTimeout(() => focusTarget?.focus(), 0);
+
+    const source = projectBriefOrigin?.textContent?.trim() || 'unknown';
+    trackEvent('start_project_opened', { source });
+
+    if (window.location.hash === '#projectBriefModal') {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
   };
 
   const closeModal = () => {
     projectBriefModal.classList.remove('is-open');
     projectBriefModal.hidden = true;
     document.body.classList.remove('modal-open');
+    if (projectBriefOrigin && typeof projectBriefOrigin.focus === 'function') {
+      projectBriefOrigin.focus();
+    }
   };
 
   const closeButtons = projectBriefModal.querySelectorAll('[data-project-close]');
-  const status = projectBriefForm.querySelector('.brief-status');
-  const success = projectBriefForm.querySelector('.brief-success');
-  const submitButton = projectBriefForm.querySelector('[data-brief-submit]');
-
-  if (!sessionStorage.getItem('pbLandingPage')) {
-    sessionStorage.setItem('pbLandingPage', window.location.href);
-  }
-
-  function setHiddenValue(name, value) {
-    const input = projectBriefForm.elements[name];
-    if (input) input.value = value || '';
-  }
-
-  function captureAttribution() {
-    const params = new URLSearchParams(window.location.search);
-    setHiddenValue('submittedAt', String(Date.now()));
-    setHiddenValue('sourcePage', window.location.href);
-    setHiddenValue('landingPage', sessionStorage.getItem('pbLandingPage') || window.location.href);
-    setHiddenValue('referrer', document.referrer);
-    setHiddenValue('utmSource', params.get('utm_source'));
-    setHiddenValue('utmMedium', params.get('utm_medium'));
-    setHiddenValue('utmCampaign', params.get('utm_campaign'));
-    setHiddenValue('utmContent', params.get('utm_content'));
-    setHiddenValue('utmTerm', params.get('utm_term'));
-  }
-
-  function setStatus(message, isError = true) {
-    if (!status) return;
-    status.textContent = message || '';
-    status.style.color = isError ? '#b42318' : '#1265f3';
-  }
-
-  function clearFieldErrors() {
-    projectBriefForm.querySelectorAll('.is-invalid').forEach((element) => element.classList.remove('is-invalid'));
-    projectBriefForm.querySelectorAll('.brief-field-error').forEach((el) => el.remove());
-  }
-
-  function attachFieldError(container, message) {
-    if (!container) return;
-    let errorEl = container.querySelector('.brief-field-error');
-    if (!errorEl) {
-      errorEl = document.createElement('p');
-      errorEl.className = 'brief-field-error';
-      container.appendChild(errorEl);
-    }
-    errorEl.textContent = message;
-  }
-
-  function markFieldError(name, message) {
-    const input = projectBriefForm.elements[name];
-    if (!input) return;
-    const el = input instanceof RadioNodeList ? input[0] : input;
-    if (!el) return;
-    el.classList.add('is-invalid');
-    const container = el.closest('label') || el.closest('.brief-textarea') || el;
-    attachFieldError(container, message);
-  }
-
-  function applyErrors(errors) {
-    clearFieldErrors();
-    const entries = Object.entries(errors || {});
-    entries.forEach(([key, message]) => markFieldError(key, message));
-    if (entries.length) {
-      const [firstKey] = entries[0];
-      const firstField = projectBriefForm.querySelector(`[name="${firstKey}"]`);
-      if (firstField && typeof firstField.focus === 'function') firstField.focus({ preventScroll: true });
-    }
-  }
-
-  function openBrief(event, origin = null) {
-    clearFieldErrors();
-    if (event) {
-      event.preventDefault();
-      const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
-      projectBriefOrigin = origin || target?.closest('[data-project-trigger], a[href="#projectBriefModal"]') || null;
-    } else projectBriefOrigin = null;
-    captureAttribution();
-    openModal();
-    if (success) success.hidden = true;
-    setStatus('');
-    const source = projectBriefOrigin?.textContent?.trim() || 'unknown';
-    trackEvent('start_project_opened', { source });
-    if (window.location.hash === '#projectBriefModal') history.replaceState(null, '', window.location.pathname + window.location.search);
-  }
-
-  function closeBrief() {
+  closeButtons.forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault();
     closeModal();
-    setStatus('');
-    if (projectBriefOrigin && typeof projectBriefOrigin.focus === 'function') projectBriefOrigin.focus();
-  }
+  }));
+
+  projectBriefModal.addEventListener('click', (event) => {
+    if (event.target === projectBriefModal || event.target?.closest('.project-brief-backdrop')) {
+      closeModal();
+    }
+  });
 
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
@@ -251,69 +200,25 @@ function initProjectBrief() {
     if (!trigger) return;
     if (trigger.tagName.toLowerCase() === 'a' && trigger.getAttribute('href') !== '#projectBriefModal') return;
     if (event.defaultPrevented) return;
-    openBrief(event, trigger);
-  });
-  closeButtons.forEach((button) => button.addEventListener('click', closeBrief));
-
-  const shouldOpenFromUrl = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('project') === 'start' || params.get('project') === 'brief' || window.location.hash === '#projectBriefModal';
-  };
-  if (shouldOpenFromUrl()) openBrief();
-
-  projectBriefForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    clearFieldErrors();
-    const data = projectBriefPayload();
-    if (!data.name) return setStatus('Please enter your name.');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return setStatus('Please provide a valid email.');
-    if (!data.service) return setStatus('Please select the service you need.');
-    if (!data.description || data.description.length < 20) return setStatus('Please describe your project (at least 20 characters).');
-
-    submitButton.disabled = true;
-    submitButton.classList.add('is-submitting');
-    const originalText = submitButton.textContent;
-    submitButton.textContent = 'SENDING...';
-    setStatus('Sending project...', false);
-
-    try {
-      const response = await fetch('/api/project-inquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.ok) {
-        if (result.errors) {
-          applyErrors(result.errors);
-          setStatus(result.message || 'Please review the highlighted fields.');
-          return;
-        }
-        throw new Error(result.message || "We couldn't send the project brief. Please try again.");
-      }
-      trackEvent('project_form_submitted');
-      if (success) {
-        projectBriefForm.querySelectorAll('input, textarea, select, button').forEach((el) => el.setAttribute('disabled', 'true'));
-        success.hidden = false;
-        setStatus('');
-      }
-    } catch (err) {
-      trackEvent('project_form_failed');
-      setStatus(err.message || "We couldn't send the project brief. Please try again.");
-    } finally {
-      submitButton.disabled = false;
-      submitButton.classList.remove('is-submitting');
-      submitButton.textContent = originalText;
-    }
+    openModal(event, trigger);
   });
 
   document.addEventListener('keydown', (event) => {
     if (projectBriefModal.hidden) return;
     if (event.key === 'Escape') {
-      closeBrief();
-      return;
+      event.preventDefault();
+      closeModal();
     }
   });
+
+  const shouldOpenFromUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('project') === 'start' || params.get('project') === 'brief' || window.location.hash === '#projectBriefModal';
+  };
+
+  if (shouldOpenFromUrl()) {
+    openModal();
+  }
 }
 
 function initPageEntrance() {
