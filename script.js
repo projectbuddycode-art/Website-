@@ -49,9 +49,8 @@ function createFooterMarkup() {
           <a href="/contact">Contact</a>
         </div>
         <div class="footer-group">
-          <p class="footer-group-title">Explore</p>
-          <a href="/work">Work</a>
-          <a href="/services">Services</a>
+          <p class="footer-group-title">Contact</p>
+          <a href="https://calendly.com/projectbuddy/project-discussion" target="_blank" rel="noopener noreferrer">Schedule a Meeting</a>
           <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
           <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
@@ -135,15 +134,16 @@ function initProjectBrief() {
       <div class="project-brief-panel">
         <p class="project-brief-kicker">PROJECT BUDDY / START A PROJECT</p>
         <h2 id="contact-panel-title">Let's discuss what you're building.</h2>
-        <p class="project-brief-copy">Have a project, system or operational challenge in mind? Send us the requirements directly or connect with the founder.</p>
+        <p class="project-brief-copy">Have a project, system or operational challenge in mind? Choose the easiest way to connect with us.</p>
         <div class="project-brief-actions">
-          <a class="project-brief-button primary" href="mailto:info@projectbuddy.co.in?subject=Project%20Inquiry%20%E2%80%94%20Project%20Buddy&amp;body=Hi%20Project%20Buddy%2C%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AProject%20%2F%20requirement%3A">Email Project Buddy →</a>
-          <a class="project-brief-button secondary" href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
+          <a class="project-brief-button primary" href="https://calendly.com/projectbuddy/project-discussion" target="_blank" rel="noopener noreferrer">Schedule a Meeting →</a>
+          <a class="project-brief-button secondary" href="mailto:info@projectbuddy.co.in?subject=Project%20Inquiry%20%E2%80%94%20Project%20Buddy&amp;body=Hi%20Project%20Buddy%2C%0A%0AI'd%20like%20to%20discuss%20a%20project.%0A%0AProject%20%2F%20requirement%3A">Email Project Buddy →</a>
+          <a class="project-brief-button tertiary" href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Connect on LinkedIn →</a>
         </div>
-        <p class="project-brief-support">For project requirements, partnerships and business enquiries.</p>
+        <p class="project-brief-support">Book a project discussion at a time that works for you.</p>
         <div class="project-brief-contact-row" aria-label="Direct contact options">
           <a href="mailto:info@projectbuddy.co.in">info@projectbuddy.co.in</a>
-          <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">Shivam Dubey</a>
+          <a href="https://www.linkedin.com/in/shivamdubey-pb" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
       </div>
     </div>

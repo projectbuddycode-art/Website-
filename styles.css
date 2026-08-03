@@ -2182,12 +2182,10 @@ body.modal-open {
 
 .project-brief-shell {
   position: relative;
-  width: min(820px, calc(100vw - 48px));
-  max-width: 820px;
-  height: auto;
-  max-height: min(720px, calc(100dvh - 40px));
-  display: block;
-  border-radius: 20px;
+    width: min(520px, calc(100vw - 40px));
+    max-width: 520px;
+    height: auto;
+    max-height: min(680px, calc(100dvh - 40px));
   overflow: hidden;
   border: 1px solid rgba(18, 101, 243, 0.12);
   background: rgba(255, 255, 255, 0.88);
@@ -2217,11 +2215,10 @@ body.modal-open {
 
 .project-brief-panel {
   position: relative;
-  padding: 2rem;
-  display: grid;
-  gap: 1rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,249,255,0.92));
-}
+    padding: 2.5rem;
+    display: grid;
+    gap: 1rem;
+    min-height: 320px;
 
 .project-brief-kicker {
   margin: 0;
@@ -2251,22 +2248,20 @@ body.modal-open {
 
 .project-brief-actions {
   display: grid;
-  gap: 0.8rem;
-  margin-top: 0.2rem;
-}
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
 
-.project-brief-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 54px;
-  padding: 0.95rem 1.1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(18, 101, 243, 0.16);
-  text-decoration: none;
-  font-weight: 700;
-  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+  .project-brief-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 54px;
+    padding: 0.95rem 1.1rem;
+    border-radius: 18px;
+    font-weight: 700;
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 
 .project-brief-button:hover,
@@ -2280,7 +2275,8 @@ body.modal-open {
   color: #ffffff;
 }
 
-.project-brief-button.secondary {
+.project-brief-button.secondary,
+.project-brief-button.tertiary {
   background: rgba(255,255,255,0.92);
   color: var(--deep-navy);
   border-color: rgba(18, 101, 243, 0.2);
@@ -2305,7 +2301,7 @@ body.modal-open {
 }
 
 @media (max-width: 900px) {
-  .project-brief-shell { width: min(520px, calc(100vw - 24px)); max-width: 520px; }
+  .project-brief-shell { width: min(520px, calc(100vw - 40px)); max-width: 520px; }
 }
 
 @media (max-width: 767px) {
@@ -2316,7 +2312,7 @@ body.modal-open {
     border-radius: 24px;
   }
   .project-brief-panel {
-    padding: 1.25rem;
+    padding: 1.5rem;
     gap: 0.85rem;
   }
   .project-brief-panel h2 {
