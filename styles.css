@@ -12,6 +12,25 @@
   --page-max: 1280px;
   --page-gutter: clamp(24px, 5vw, 72px);
   --page-content-width: min(var(--page-max), calc(100% - (var(--page-gutter) * 2)));
+  /* Spacing scale (8px base) */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+
+  /* Named container widths for internal pages */
+  --editorial-max: 1000px; /* hero / editorial */
+  --standard-max: 1200px;  /* cards / grids */
+  --visual-max: 1280px;    /* videos / visuals */
+
+  /* Offset to prevent sticky nav overlap on internal pages */
+  --nav-offset: 96px;
   --glass-primary: rgba(255, 255, 255, 0.62);
   --glass-secondary: rgba(255, 255, 255, 0.42);
   --glass-border: rgba(255, 255, 255, 0.78);
@@ -457,6 +476,43 @@ video {
 .section-reveal.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+/* Responsive mobile nav: show toggle, hide inline links */
+@media (max-width: 900px) {
+  .site-nav {
+    left: var(--page-gutter);
+    transform: none;
+    width: calc(100% - (var(--page-gutter) * 2));
+    top: calc(env(safe-area-inset-top, 0px) + 0.6rem);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .nav-toggle { display: inline-flex; }
+
+  /* Ensure mobile nav panel accounts for safe area */
+  .mobile-nav-panel {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 4.8rem);
+  }
+
+  /* Keep brand visible and prevent overlap */
+  .site-nav .brand { z-index: 31; }
+}
+
+/* Internal hero headline responsive scaling */
+.inner-hero h1 {
+  font-size: clamp(28px, 6.5vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+@media (max-width: 420px) {
+  .brand-mark { width: 2.4rem; }
+  .inner-hero h1 { font-size: clamp(26px, 7.5vw, 48px); }
 }
 
 .hero {
@@ -2346,6 +2402,23 @@ body.modal-open {
   .hero-description { max-width: 640px; margin: 0 auto; font-size: 16px; }
   .hero-actions { justify-content: center; gap: 0.6rem; flex-direction: column; }
   .hero-actions .button { width: 100%; max-width: 320px; margin: 0 auto; }
+
+  /* Mobile hero video adjustments to keep important motion in-frame and increase legibility */
+  .hero {
+    min-height: 100dvh;
+    height: auto;
+    padding: calc(env(safe-area-inset-top, 0px) + 4rem) 1rem 2rem;
+  }
+
+  .hero-video {
+    object-position: center 20%;
+  }
+
+  /* Darker scrim on mobile for contrast using brand color */
+  .hero-veil {
+    background: linear-gradient(180deg, rgba(16,33,59,0.36) 0%, rgba(16,33,59,0.36) 100%);
+    mix-blend-mode: normal;
+  }
 }
 
 /* Systems section: ensure copy appears before visual on smaller screens */
@@ -2390,7 +2463,7 @@ body.modal-open {
   width: 100%;
   max-width: var(--page-content-width);
   margin-inline: auto;
-  padding: clamp(100px, 10vw, 140px) 0 72px;
+  padding: var(--space-96) 0 var(--space-48);
 }
 
 .inner-hero {
@@ -2399,7 +2472,26 @@ body.modal-open {
   gap: clamp(1.75rem, 3vw, 2.5rem);
   align-items: start;
   min-height: 68vh;
+  /* Centered editorial hero container */
+  text-align: center;
 }
+
+/* Hero content wrapper: editorial width */
+.inner-hero > .hero-inner {
+  width: min(var(--editorial-max), calc(100% - var(--space-96)));
+  margin-inline: auto;
+  padding-inline: var(--space-24);
+}
+
+/* Prevent overlap with sticky nav on internal pages */
+body.inner-page h1 {
+  scroll-margin-top: var(--nav-offset);
+}
+
+/* Container utilities */
+.container-editorial { max-width: var(--editorial-max); margin-inline: auto; padding-inline: var(--space-24); }
+.container-standard  { max-width: var(--standard-max);  margin-inline: auto; padding-inline: var(--space-24); }
+.container-visual    { max-width: var(--visual-max);    margin-inline: auto; padding-inline: var(--space-24); }
 
 .inner-hero h1 {
   margin: 0 0 1.3rem;
