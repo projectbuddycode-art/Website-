@@ -264,7 +264,8 @@ function initProjectBrief() {
   function openBrief(event, origin = null) {
     if (event) {
       event.preventDefault();
-      projectBriefOrigin = origin || event.target.closest('[data-project-trigger]') || event.currentTarget;
+      const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
+      projectBriefOrigin = origin || target?.closest('[data-project-trigger], a[href="#projectBriefModal"]') || null;
     } else {
       projectBriefOrigin = null;
     }
@@ -295,7 +296,8 @@ function initProjectBrief() {
   }
 
   document.addEventListener('click', (event) => {
-    const trigger = event.target.closest('[data-project-trigger], a[href="#projectBriefModal"]');
+    const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
+    const trigger = target?.closest('[data-project-trigger], a[href="#projectBriefModal"]');
     if (!trigger) return;
     if (trigger.tagName.toLowerCase() === 'a' && trigger.getAttribute('href') !== '#projectBriefModal') return;
     openBrief(event, trigger);
