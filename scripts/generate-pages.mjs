@@ -266,7 +266,7 @@ function list(items) {
 function layout({ title, description, path, schema, body }) {
   return `${pageHead({ title, description, path, schema })}
 <body class="inner-page">
-  <div class="page-shell">${nav()}<main>${body}</main>${modal()}</div>
+  <div class="page-shell">${nav()}<main class="site-main">${body}</main>${modal()}</div>
   <script src="/script.js"></script>
 </body>
 </html>`;
