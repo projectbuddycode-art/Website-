@@ -2182,23 +2182,18 @@ body.modal-open {
 
 .project-brief-shell {
   position: relative;
-  width: min(1040px, calc(100vw - 64px));
-  height: min(760px, calc(100dvh - 48px));
-  max-height: calc(100dvh - 48px);
-  display: grid;
-  grid-template-columns: 0.3fr 0.7fr;
+  width: min(820px, calc(100vw - 48px));
+  max-width: 820px;
+  height: auto;
+  max-height: min(720px, calc(100dvh - 40px));
+  display: block;
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.82);
-  background:
-    linear-gradient(rgba(18, 101, 243, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(18, 101, 243, 0.03) 1px, transparent 1px),
-    rgba(255, 255, 255, 0.68);
-  background-size: 32px 32px;
-  box-shadow: 0 28px 84px rgba(16, 33, 59, 0.18);
+  border: 1px solid rgba(18, 101, 243, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 28px 84px rgba(16, 33, 59, 0.12);
   opacity: 0;
-  /* avoid transform transitions to prevent content re-centering while typing */
-  transition: opacity 220ms ease;
+  transition: opacity 180ms ease;
 }
 
 .project-brief-modal.is-open .project-brief-shell {
@@ -2283,25 +2278,55 @@ body.modal-open {
 
 /* Reduce left panel use on smaller screens */
 @media (max-width: 900px) {
-  .project-brief-shell { grid-template-columns: 1fr; }
-  .project-brief-aside { display: none; }
   .project-brief-shell { width: calc(100vw - 24px); height: auto; max-height: calc(100dvh - 24px); }
+  .project-brief-aside { display: none; }
 }
 
 @media (max-width: 767px) {
   .project-brief-modal { padding: 0; }
   .project-brief-shell {
-    width: 100%;
-    height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
-    grid-template-columns: 1fr;
+    width: calc(100% - 24px);
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 24px);
+    border-radius: 22px;
   }
   .project-brief-form { padding: 1rem; padding-bottom: calc(env(safe-area-inset-bottom) + 76px); }
   .brief-header h2 { font-size: clamp(36px, 11vw, 46px); line-height: 0.98; text-align: center; }
   .brief-header span { text-align: center; max-width: 34rem; margin-inline: auto; }
   .brief-actions { padding-left: 1rem; padding-right: 1rem; }
   .project-brief-close { top: calc(env(safe-area-inset-top) + 12px); }
+}
+
+/* Hero mobile centering fixes */
+@media (max-width: 767px) {
+  .hero-copy {
+    max-width: calc(100% - 40px);
+    width: calc(100% - 40px);
+    transform: none;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 12px;
+  }
+  .hero-copy::before { display: none; }
+  .hero-headline { font-size: clamp(38px, 11vw, 56px); line-height: 0.98; }
+  .hero-description { max-width: 640px; margin: 0 auto; font-size: 16px; }
+  .hero-actions { justify-content: center; gap: 0.6rem; flex-direction: column; }
+  .hero-actions .button { width: 100%; max-width: 320px; margin: 0 auto; }
+}
+
+/* Systems section: ensure copy appears before visual on smaller screens */
+@media (max-width: 1024px) {
+  .transition-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .transition-copy-block { order: 1; }
+  .transition-visual-block { order: 2; }
+  .transition-visual-block .system-video { width: 100%; height: auto; max-width: 100%; object-fit: contain; border-radius: 12px; }
+  .transition-copy-block, .transition-visual-block { width: 100%; }
 }
 
 .project-brief-aside p,

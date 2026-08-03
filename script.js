@@ -117,13 +117,10 @@ function projectBriefPayload() {
     email: (formData.get('email') || '').trim(),
     company: (formData.get('company') || '').trim(),
     phone: (formData.get('phone') || '').trim(),
-    website: (formData.get('website') || '').trim(),
-    projectTypes: formData.getAll('projectTypes'),
+    service: (formData.get('service') || '').trim(),
     description: (formData.get('description') || '').trim(),
-    challenge: (formData.get('challenge') || '').trim(),
-    stage: formData.get('stage') || '',
-    timeline: formData.get('timeline') || '',
     budget: formData.get('budget') || '',
+    timeline: formData.get('timeline') || '',
     websiteUrl: formData.get('websiteUrl') || '',
     submittedAt: formData.get('submittedAt') || '',
     sourcePage: formData.get('sourcePage') || window.location.href,
@@ -157,32 +154,9 @@ function initProjectBrief() {
   };
 
   const closeButtons = projectBriefModal.querySelectorAll('[data-project-close]');
-  const steps = Array.from(projectBriefForm.querySelectorAll('.brief-step'));
-  const progress = Array.from(projectBriefForm.querySelectorAll('.brief-progress span'));
-  const prevButton = projectBriefForm.querySelector('[data-brief-prev]');
-  const nextButton = projectBriefForm.querySelector('[data-brief-next]');
-  const submitButton = projectBriefForm.querySelector('[data-brief-submit]');
   const status = projectBriefForm.querySelector('.brief-status');
-  const summary = projectBriefForm.querySelector('.brief-summary');
   const success = projectBriefForm.querySelector('.brief-success');
-  const actions = projectBriefForm.querySelector('.brief-actions');
-  const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-  let currentStep = 0;
-
-  if (!projectBriefForm.querySelector('#briefStepRange')) {
-    const progress = projectBriefForm.querySelector('.brief-progress');
-    if (progress) {
-      progress.insertAdjacentHTML('afterend', `
-        <div class="brief-step-slider">
-          <label for="briefStepRange">Jump to step</label>
-          <input id="briefStepRange" type="range" min="0" max="4" step="1" value="0" aria-label="Jump to form step" />
-          <div class="brief-step-slider-labels"><span>Start</span><span>Send</span></div>
-        </div>
-      `);
-    }
-  }
-
-  const stepSlider = projectBriefForm.querySelector('#briefStepRange');
+  const submitButton = projectBriefForm.querySelector('[data-brief-submit]');
 
   if (!sessionStorage.getItem('pbLandingPage')) {
     sessionStorage.setItem('pbLandingPage', window.location.href);
@@ -207,17 +181,14 @@ function initProjectBrief() {
   }
 
   function setStatus(message, isError = true) {
+    if (!status) return;
     status.textContent = message || '';
     status.style.color = isError ? '#b42318' : '#1265f3';
   }
 
   function clearFieldErrors() {
-    projectBriefForm.querySelectorAll('.is-invalid').forEach((element) => {
-      element.classList.remove('is-invalid');
-    });
-    projectBriefForm.querySelectorAll('.brief-field-error').forEach((element) => {
-      element.remove();
-    });
+    projectBriefForm.querySelectorAll('.is-invalid').forEach((element) => element.classList.remove('is-invalid'));
+    projectBriefForm.querySelectorAll('.brief-field-error').forEach((el) => el.remove());
   }
 
   function attachFieldError(container, message) {
@@ -232,107 +203,24 @@ function initProjectBrief() {
   }
 
   function markFieldError(name, message) {
-    if (name === 'projectTypes') {
-      const fieldset = projectBriefForm.querySelector('.brief-choice-group');
-      if (fieldset) {
-        fieldset.classList.add('is-invalid');
-        attachFieldError(fieldset, message);
-      }
-      return;
-    }
     const input = projectBriefForm.elements[name];
     if (!input) return;
-    const element = input instanceof RadioNodeList ? input[0] : input;
-    if (!element) return;
-    element.classList.add('is-invalid');
-    const container = element.closest('label') || element.closest('.brief-textarea') || element;
+    const el = input instanceof RadioNodeList ? input[0] : input;
+    if (!el) return;
+    el.classList.add('is-invalid');
+    const container = el.closest('label') || el.closest('.brief-textarea') || el;
     attachFieldError(container, message);
   }
 
   function applyErrors(errors) {
     clearFieldErrors();
-    const stepIndexMap = {
-      name: 0,
-      email: 0,
-      website: 0,
-      projectTypes: 1,
-      description: 1,
-      challenge: 2,
-      stage: 3,
-      timeline: 3,
-      budget: 3
-    };
     const entries = Object.entries(errors || {});
     entries.forEach(([key, message]) => markFieldError(key, message));
     if (entries.length) {
       const [firstKey] = entries[0];
-      const nextStep = typeof stepIndexMap[firstKey] === 'number' ? stepIndexMap[firstKey] : currentStep;
-      showStep(nextStep);
-      const firstErrorField = projectBriefForm.querySelector(`[name="${firstKey}"]`);
-      if (firstErrorField && typeof firstErrorField.focus === 'function') {
-        firstErrorField.focus({ preventScroll: true });
-      }
+      const firstField = projectBriefForm.querySelector(`[name="${firstKey}"]`);
+      if (firstField && typeof firstField.focus === 'function') firstField.focus({ preventScroll: true });
     }
-  }
-
-  function updateSummary() {
-    const data = projectBriefPayload();
-    summary.innerHTML = [
-      ['Name', data.name || 'Not provided'],
-      ['Company', data.company || 'Not provided'],
-      ['Project Type', data.projectTypes.join(', ') || 'Not selected'],
-      ['Stage', data.stage || 'Not selected'],
-      ['Timeline', data.timeline || 'Not selected']
-    ].map(([label, value]) => `<p><strong>${label}:</strong> ${value.replace(/[<>&]/g, '')}</p>`).join('');
-  }
-
-  function showStep(index) {
-    currentStep = Math.max(0, Math.min(index, steps.length - 1));
-    steps.forEach((step, stepIndex) => {
-      step.classList.toggle('active', stepIndex === currentStep);
-      // ensure step content is revealed but not changing shell height
-      if (stepIndex === currentStep) step.hidden = false; else step.hidden = true;
-    });
-    progress.forEach((step, stepIndex) => step.classList.toggle('active', stepIndex === currentStep));
-    if (stepSlider) stepSlider.value = String(currentStep);
-    prevButton.hidden = currentStep === 0;
-    nextButton.hidden = currentStep === steps.length - 1;
-    submitButton.hidden = currentStep !== steps.length - 1;
-    setStatus('');
-    if (currentStep === steps.length - 1) updateSummary();
-    const containerScroll = projectBriefForm.querySelector('.brief-steps-scroll');
-    if (containerScroll) containerScroll.scrollTop = 0;
-    const firstField = steps[currentStep].querySelector('input, select, textarea, button');
-    if (firstField) firstField.focus({ preventScroll: true });
-  }
-
-  if (stepSlider) {
-    stepSlider.addEventListener('input', () => {
-      const newStep = Number(stepSlider.value);
-      if (!Number.isNaN(newStep)) showStep(newStep);
-    });
-  }
-
-  function validateStep(index) {
-    const data = projectBriefPayload();
-    if (index === 0) {
-      if (!data.name) return 'Full name is required.';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return 'A valid work email is required.';
-      if (data.website) {
-        try {
-          const url = new URL(data.website);
-          if (!['http:', 'https:'].includes(url.protocol)) return 'Enter a valid website URL.';
-        } catch {
-          return 'Enter a valid website URL.';
-        }
-      }
-    }
-    if (index === 1) {
-      if (!data.projectTypes.length) return 'Choose at least one project type.';
-      if (data.description.length < 20) return 'Tell us a little more about the project.';
-    }
-    if (index === 3 && (!data.stage || !data.timeline || !data.budget)) return 'Choose the stage, timeline and budget range.';
-    return '';
   }
 
   function openBrief(event, origin = null) {
@@ -341,43 +229,20 @@ function initProjectBrief() {
       event.preventDefault();
       const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
       projectBriefOrigin = origin || target?.closest('[data-project-trigger], a[href="#projectBriefModal"]') || null;
-    } else {
-      projectBriefOrigin = null;
-    }
-
+    } else projectBriefOrigin = null;
     captureAttribution();
     openModal();
-    success.hidden = true;
-    actions.hidden = false;
-    steps.forEach((step) => { step.hidden = false; });
-    showStep(0);
-
+    if (success) success.hidden = true;
+    setStatus('');
     const source = projectBriefOrigin?.textContent?.trim() || 'unknown';
-
     trackEvent('start_project_opened', { source });
-
-    if (window.location.hash === '#projectBriefModal') {
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    }
-  }
-
-  const finalStep = steps[steps.length - 1];
-  if (finalStep && !finalStep.querySelector('[data-brief-submit-inline]')) {
-    const inlineSubmit = document.createElement('button');
-    inlineSubmit.className = 'button primary';
-    inlineSubmit.type = 'submit';
-    inlineSubmit.dataset.briefSubmitInline = 'true';
-    inlineSubmit.textContent = 'Send Project Brief →';
-    finalStep.appendChild(inlineSubmit);
+    if (window.location.hash === '#projectBriefModal') history.replaceState(null, '', window.location.pathname + window.location.search);
   }
 
   function closeBrief() {
     closeModal();
     setStatus('');
-    if (projectBriefOrigin && typeof projectBriefOrigin.focus === 'function') {
-      projectBriefOrigin.focus();
-    }
+    if (projectBriefOrigin && typeof projectBriefOrigin.focus === 'function') projectBriefOrigin.focus();
   }
 
   document.addEventListener('click', (event) => {
@@ -394,49 +259,28 @@ function initProjectBrief() {
     const params = new URLSearchParams(window.location.search);
     return params.get('project') === 'start' || params.get('project') === 'brief' || window.location.hash === '#projectBriefModal';
   };
-
-  if (shouldOpenFromUrl()) {
-    openBrief();
-  }
-
-  nextButton.addEventListener('click', () => {
-    const error = validateStep(currentStep);
-    if (error) {
-      setStatus(error);
-      return;
-    }
-    trackEvent('project_form_step_completed', { step: currentStep + 1 });
-    if (currentStep === 0) trackEvent('project_form_started');
-    showStep(currentStep + 1);
-  });
-
-  prevButton.addEventListener('click', () => showStep(currentStep - 1));
-
-  if (stepSlider) {
-    stepSlider.addEventListener('change', () => {
-      const newStep = Number(stepSlider.value);
-      if (!Number.isNaN(newStep)) showStep(newStep);
-    });
-  }
+  if (shouldOpenFromUrl()) openBrief();
 
   projectBriefForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const error = validateStep(currentStep);
-    if (error) {
-      setStatus(error);
-      return;
-    }
+    clearFieldErrors();
+    const data = projectBriefPayload();
+    if (!data.name) return setStatus('Please enter your name.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) return setStatus('Please provide a valid email.');
+    if (!data.service) return setStatus('Please select the service you need.');
+    if (!data.description || data.description.length < 20) return setStatus('Please describe your project (at least 20 characters).');
 
     submitButton.disabled = true;
     submitButton.classList.add('is-submitting');
-    submitButton.textContent = 'SENDING BRIEF...';
-    setStatus('Sending project brief...', false);
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'SENDING...';
+    setStatus('Sending project...', false);
 
     try {
       const response = await fetch('/api/project-inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(projectBriefPayload())
+        body: JSON.stringify(data)
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
@@ -448,18 +292,18 @@ function initProjectBrief() {
         throw new Error(result.message || "We couldn't send the project brief. Please try again.");
       }
       trackEvent('project_form_submitted');
-      steps.forEach((step) => { step.hidden = true; step.classList.remove('active'); });
-      actions.hidden = true;
-      success.hidden = false;
-      setStatus('');
-      success.querySelector('[data-project-close]').focus();
-    } catch (error) {
+      if (success) {
+        projectBriefForm.querySelectorAll('input, textarea, select, button').forEach((el) => el.setAttribute('disabled', 'true'));
+        success.hidden = false;
+        setStatus('');
+      }
+    } catch (err) {
       trackEvent('project_form_failed');
-      setStatus(error.message || "We couldn't send the project brief. Please try again.");
+      setStatus(err.message || "We couldn't send the project brief. Please try again.");
     } finally {
       submitButton.disabled = false;
       submitButton.classList.remove('is-submitting');
-      submitButton.textContent = 'Send Project Brief →';
+      submitButton.textContent = originalText;
     }
   });
 
@@ -468,19 +312,6 @@ function initProjectBrief() {
     if (event.key === 'Escape') {
       closeBrief();
       return;
-    }
-    if (event.key === 'Tab') {
-      const focusable = Array.from(projectBriefModal.querySelectorAll(focusableSelector)).filter((element) => element.offsetParent !== null);
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
     }
   });
 }

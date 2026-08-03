@@ -684,119 +684,73 @@
             <input type="hidden" name="utmTerm" />
 
             <header class="brief-header">
-              <p>PROJECT BUDDY / START A PROJECT</p>
-              <h2 id="project-brief-title">Tell us what<br />you're building.</h2>
-              <span>Share the problem, product or operation you're working on. We'll review the requirements and determine the right next step.</span>
+              <p class="eyebrow">PROJECT BUDDY / START A PROJECT</p>
+              <h2 id="project-brief-title">Tell us what you're building.</h2>
+              <span>Share a few details about your project and we'll review the requirements and get back to you.</span>
             </header>
 
-            <div class="brief-progress" aria-label="Project brief progress">
-              <span class="active">01</span><i></i><span>02</span><i></i><span>03</span><i></i><span>04</span><i></i><span>05</span>
+            <div class="brief-body">
+              <div class="brief-field-grid">
+                <label>Your name *<input type="text" name="name" autocomplete="name" required maxlength="100" /></label>
+                <label>Work Email *<input type="email" name="email" autocomplete="email" required maxlength="254" /></label>
+              </div>
+
+              <div class="brief-field-grid">
+                <label>Company / Organization<input type="text" name="company" autocomplete="organization" maxlength="150" /></label>
+                <label>Phone / WhatsApp<input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" /></label>
+              </div>
+
+              <label>What do you need? *
+                <select name="service" required>
+                  <option value="">Select a service</option>
+                  <option>Custom Software</option>
+                  <option>AI Automation</option>
+                  <option>Web Platform</option>
+                  <option>Mobile Application</option>
+                  <option>Internal Business System</option>
+                  <option>System Integration</option>
+                  <option>Other</option>
+                </select>
+              </label>
+
+              <label class="brief-textarea">Tell us about the project *
+                <textarea name="description" required maxlength="5000" placeholder="What are you trying to build, improve or automate?"></textarea>
+              </label>
+
+              <div class="brief-field-grid">
+                <label>Budget
+                  <select name="budget">
+                    <option>Not sure yet</option>
+                    <option>Under ₹1L</option>
+                    <option>₹1L – ₹5L</option>
+                    <option>₹5L – ₹15L</option>
+                    <option>₹15L+</option>
+                    <option>Enterprise / Let's discuss</option>
+                  </select>
+                </label>
+                <label>Timeline
+                  <select name="timeline">
+                    <option>As soon as possible</option>
+                    <option>1–2 months</option>
+                    <option>3–6 months</option>
+                    <option>6+ months</option>
+                    <option>Exploring</option>
+                  </select>
+                </label>
+              </div>
             </div>
 
             <div class="brief-status" role="status" aria-live="polite"></div>
 
-            <div class="brief-steps-scroll">
-            <section class="brief-step active" data-step="0" aria-labelledby="brief-step-1">
-              <p class="brief-step-label" id="brief-step-1">01 / ABOUT YOU</p>
-              <div class="brief-field-grid">
-                <label>Full Name *<input type="text" name="name" autocomplete="name" required maxlength="100" /></label>
-                <label>Work Email *<input type="email" name="email" autocomplete="email" required maxlength="254" /></label>
-                <label>Company / Organization<input type="text" name="company" autocomplete="organization" maxlength="150" /></label>
-                <label>Phone / WhatsApp<input type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" /></label>
-                <label class="wide">Website<input type="url" name="website" autocomplete="url" inputmode="url" maxlength="300" placeholder="https://" /></label>
-              </div>
-            </section>
-
-            <section class="brief-step" data-step="1" aria-labelledby="brief-step-2">
-              <p class="brief-step-label" id="brief-step-2">02 / WHAT ARE YOU BUILDING?</p>
-              <fieldset class="brief-choice-group">
-                <legend>What can we help you build?</legend>
-                <label><input type="checkbox" name="projectTypes" value="Custom Software" /> Custom Software</label>
-                <label><input type="checkbox" name="projectTypes" value="Enterprise Application" /> Enterprise Application</label>
-                <label><input type="checkbox" name="projectTypes" value="Web Application" /> Web Application</label>
-                <label><input type="checkbox" name="projectTypes" value="Mobile Application" /> Mobile Application</label>
-                <label><input type="checkbox" name="projectTypes" value="AI Automation" /> AI Automation</label>
-                <label><input type="checkbox" name="projectTypes" value="Business Process Automation" /> Business Process Automation</label>
-                <label><input type="checkbox" name="projectTypes" value="System Integration" /> System Integration</label>
-                <label><input type="checkbox" name="projectTypes" value="Software Modernization" /> Software Modernization</label>
-                <label><input type="checkbox" name="projectTypes" value="SaaS Product" /> SaaS Product</label>
-                <label><input type="checkbox" name="projectTypes" value="AI Integration" /> AI Integration</label>
-                <label><input type="checkbox" name="projectTypes" value="Other" /> Other</label>
-              </fieldset>
-              <label class="brief-textarea">Tell us a little about the project *
-                <small>Share the idea, workflow or problem you want to solve.</small>
-                <textarea name="description" required maxlength="5000" placeholder="Describe the product, workflow, operation or automation you're building."></textarea>
-              </label>
-            </section>
-
-            <section class="brief-step" data-step="2" aria-labelledby="brief-step-3">
-              <p class="brief-step-label" id="brief-step-3">03 / THE PROJECT</p>
-              <label class="brief-textarea">What is the biggest operational or technical challenge?
-                <textarea name="challenge" maxlength="3000"></textarea>
-              </label>
-            </section>
-
-            <section class="brief-step" data-step="3" aria-labelledby="brief-step-4">
-              <p class="brief-step-label" id="brief-step-4">04 / PROJECT CONTEXT</p>
-              <div class="brief-field-grid">
-                <label>Project Stage
-                  <select name="stage" required>
-                    <option value="">Select stage</option>
-                    <option>Idea / Planning</option>
-                    <option>Existing System</option>
-                    <option>MVP</option>
-                    <option>In Development</option>
-                    <option>Production System</option>
-                    <option>Modernization / Replacement</option>
-                  </select>
-                </label>
-                <label>Timeline
-                  <select name="timeline" required>
-                    <option value="">Select timeline</option>
-                    <option>As soon as possible</option>
-                    <option>Within 1 month</option>
-                    <option>1-3 months</option>
-                    <option>3-6 months</option>
-                    <option>Flexible</option>
-                  </select>
-                </label>
-                <label class="wide">Budget Range
-                  <select name="budget" required>
-                    <option value="">Select budget range</option>
-                    <option>Prefer to discuss</option>
-                    <option>Under $5,000</option>
-                    <option>$5,000-$15,000</option>
-                    <option>$15,000-$30,000</option>
-                    <option>$30,000-$75,000</option>
-                    <option>$75,000+</option>
-                  </select>
-                </label>
-              </div>
-            </section>
-
-            <section class="brief-step" data-step="4" aria-labelledby="brief-step-5">
-              <p class="brief-step-label" id="brief-step-5">05 / SEND BRIEF</p>
-              <div class="brief-summary" aria-live="polite"></div>
-              <p class="brief-privacy">Your project details are used only to review and respond to your inquiry.</p>
-            </section>
-
-            <section class="brief-success" hidden>
-              <p class="brief-step-label">BRIEF / RECEIVED</p>
+            <div class="brief-success" hidden>
               <p class="brief-check">Project brief received</p>
-              <h2>Your project is<br />in our system.</h2>
-              <p>We've received the details and will review the requirements.</p>
-              <div class="brief-system-animation success">
-                <span>REQUEST</span><i></i><span>RECEIVED</span><i></i><span>REVIEW</span>
-              </div>
-              <button class="button primary" type="button" data-project-close>Return to Project Buddy →</button>
-            </section>
+              <h3>Thanks — we'll review the details and get back to you shortly.</h3>
+              <button class="button primary" type="button" data-project-close>Close</button>
+            </div>
 
             <footer class="brief-actions">
-              <button class="button secondary" type="button" data-brief-prev>Back</button>
-              <button class="button primary" type="button" data-brief-next>Next →</button>
-              <button class="button primary" type="submit" data-brief-submit hidden>Send Project Brief →</button>
+              <button class="button primary" type="submit" data-brief-submit>Submit Project →</button>
             </footer>
-          </div>
           </form>
         </div>
       </div>
