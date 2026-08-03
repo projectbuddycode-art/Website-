@@ -489,7 +489,8 @@ video {
   }
 
   .nav-links { display: none; }
-  .nav-cta { display: none; }
+  /* Keep the primary CTA visible on small screens */
+  .nav-cta { display: inline-flex !important; align-items: center; padding: 0.45rem 0.6rem; font-size: 0.92rem; border-radius: 14px; }
   .nav-toggle { display: inline-flex; }
 
   /* Ensure mobile nav panel accounts for safe area */
@@ -499,6 +500,11 @@ video {
 
   /* Keep brand visible and prevent overlap */
   .site-nav .brand { z-index: 31; }
+}
+
+/* Strong fallback: ensure all internal pages reserve space below the fixed nav */
+body.inner-page main, body.inner-page .site-main, body.inner-page main.site-main { 
+  padding-top: calc(var(--nav-offset) + var(--space-8)) !important;
 }
 
 /* Internal hero headline responsive scaling */
@@ -691,6 +697,18 @@ video {
   transform: translateY(1.15em);
   clip-path: inset(0 0 100% 0);
   opacity: 0;
+}
+
+/* Force each headline inner span to act as its own block so words never run together */
+.hero-headline .line span {
+  display: block;
+}
+
+/* Ensure hero copy and actions sit above the background video on mobile */
+.hero-copy,
+.hero-actions {
+  position: relative;
+  z-index: 40;
 }
 
 .hero-description {
@@ -2495,6 +2513,12 @@ body.inner-page h1 {
   scroll-margin-top: var(--nav-offset);
 }
 
+/* Ensure the very first content block on internal pages sits below the sticky nav.
+   Applies to pages that don't use the editorial `.inner-hero` wrapper. */
+body.inner-page main > *:first-child:not(.inner-hero) {
+  padding-top: calc(var(--nav-offset) + var(--space-24));
+}
+
 /* Container utilities */
 .container-editorial { max-width: var(--editorial-max); margin-inline: auto; padding-inline: var(--space-24); }
 .container-standard  { max-width: var(--standard-max);  margin-inline: auto; padding-inline: var(--space-24); }
@@ -2579,6 +2603,11 @@ section {
   width: min(var(--page-max), calc(100% - (var(--page-gutter) * 2))) !important;
   margin-inline: auto !important;
   transform: none !important;
+}
+
+/* Reserve space at the top of internal pages so the fixed nav doesn't overlap content */
+body.inner-page .site-main {
+  padding-top: calc(var(--nav-offset) + var(--space-8)) !important;
 }
 
 /* Center each top-level content block inside main */
