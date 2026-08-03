@@ -1,0 +1,16 @@
+{
+  "name": "Project Buddy",
+  "short_name": "Project Buddy",
+  "description": "Custom software development, enterprise applications, AI automation and operational software systems.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1265f3",
+  "icons": [
+    {
+      "src": "/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

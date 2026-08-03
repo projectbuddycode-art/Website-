@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /.env
+Disallow: /.vercel/
+
+Sitemap: https://www.projectbuddy.co.in/sitemap.xml

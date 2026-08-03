@@ -1,0 +1,30 @@
+# Project Buddy
+
+> Project Buddy is a software engineering company that designs and builds custom software, enterprise applications, AI automation and connected digital systems around real business operations.
+
+## Core pages
+- https://www.projectbuddy.co.in/
+- https://www.projectbuddy.co.in/services
+- https://www.projectbuddy.co.in/work
+- https://www.projectbuddy.co.in/company
+- https://www.projectbuddy.co.in/contact
+- https://www.projectbuddy.co.in/privacy-policy
+- https://www.projectbuddy.co.in/terms
+
+## Services
+- Custom Software Development
+- Enterprise Software Development
+- AI Automation
+- Business Process Automation
+- Web Application Development
+- Mobile App Development
+- Software Modernization
+- System Integration
+
+## Selected projects
+- https://www.projectbuddy.co.in/work/diamond-capture-system
+- https://www.projectbuddy.co.in/work/instituteos
+- https://www.projectbuddy.co.in/work/ai-receptionist
+- https://www.projectbuddy.co.in/work/atlas
+- https://www.projectbuddy.co.in/work/edusphere-ai
+- https://www.projectbuddy.co.in/work/fusion
