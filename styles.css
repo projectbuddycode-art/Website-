@@ -2581,6 +2581,14 @@ section {
   transform: none !important;
 }
 
+/* Center each top-level content block inside main */
+.site-main > * {
+  width: 100%;
+  max-width: var(--page-content-width);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
 /* Subtle environment grid */
 .visual-grid { position:absolute; inset:0; background-image: radial-gradient(circle at 20% 12%, rgba(18,101,243,0.02), transparent 20%); opacity:0.9; pointer-events:none; }
 
