@@ -2285,6 +2285,29 @@ body.modal-open {
   -webkit-backdrop-filter: blur(26px) saturate(142%);
 }
 
+.project-brief-modal {
+  min-height: 100vh;
+}
+
+.project-brief-shell {
+  width: min(700px, 100%);
+}
+
+.brief-field-error {
+  margin: 0.5rem 0 0;
+  color: #b42318;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.project-brief-form .is-invalid input,
+.project-brief-form .is-invalid textarea,
+.project-brief-form .is-invalid select,
+.project-brief-form .is-invalid fieldset {
+  outline: 2px solid rgba(180, 35, 24, 0.18);
+  outline-offset: 3px;
+}
+
 .brief-honeypot {
   position: absolute;
   left: -9999px;

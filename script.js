@@ -211,6 +211,70 @@ function initProjectBrief() {
     status.style.color = isError ? '#b42318' : '#1265f3';
   }
 
+  function clearFieldErrors() {
+    projectBriefForm.querySelectorAll('.is-invalid').forEach((element) => {
+      element.classList.remove('is-invalid');
+    });
+    projectBriefForm.querySelectorAll('.brief-field-error').forEach((element) => {
+      element.remove();
+    });
+  }
+
+  function attachFieldError(container, message) {
+    if (!container) return;
+    let errorEl = container.querySelector('.brief-field-error');
+    if (!errorEl) {
+      errorEl = document.createElement('p');
+      errorEl.className = 'brief-field-error';
+      container.appendChild(errorEl);
+    }
+    errorEl.textContent = message;
+  }
+
+  function markFieldError(name, message) {
+    if (name === 'projectTypes') {
+      const fieldset = projectBriefForm.querySelector('.brief-choice-group');
+      if (fieldset) {
+        fieldset.classList.add('is-invalid');
+        attachFieldError(fieldset, message);
+      }
+      return;
+    }
+    const input = projectBriefForm.elements[name];
+    if (!input) return;
+    const element = input instanceof RadioNodeList ? input[0] : input;
+    if (!element) return;
+    element.classList.add('is-invalid');
+    const container = element.closest('label') || element.closest('.brief-textarea') || element;
+    attachFieldError(container, message);
+  }
+
+  function applyErrors(errors) {
+    clearFieldErrors();
+    const stepIndexMap = {
+      name: 0,
+      email: 0,
+      website: 0,
+      projectTypes: 1,
+      description: 1,
+      challenge: 2,
+      stage: 3,
+      timeline: 3,
+      budget: 3
+    };
+    const entries = Object.entries(errors || {});
+    entries.forEach(([key, message]) => markFieldError(key, message));
+    if (entries.length) {
+      const [firstKey] = entries[0];
+      const nextStep = typeof stepIndexMap[firstKey] === 'number' ? stepIndexMap[firstKey] : currentStep;
+      showStep(nextStep);
+      const firstErrorField = projectBriefForm.querySelector(`[name="${firstKey}"]`);
+      if (firstErrorField && typeof firstErrorField.focus === 'function') {
+        firstErrorField.focus({ preventScroll: true });
+      }
+    }
+  }
+
   function updateSummary() {
     const data = projectBriefPayload();
     summary.innerHTML = [
@@ -266,6 +330,7 @@ function initProjectBrief() {
   }
 
   function openBrief(event, origin = null) {
+    clearFieldErrors();
     if (event) {
       event.preventDefault();
       const target = event.target instanceof Element ? event.target : event.target?.parentElement || null;
@@ -289,6 +354,16 @@ function initProjectBrief() {
       history.replaceState(null, '', window.location.pathname + window.location.search);
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
+  }
+
+  const finalStep = steps[steps.length - 1];
+  if (finalStep && !finalStep.querySelector('[data-brief-submit-inline]')) {
+    const inlineSubmit = document.createElement('button');
+    inlineSubmit.className = 'button primary';
+    inlineSubmit.type = 'submit';
+    inlineSubmit.dataset.briefSubmitInline = 'true';
+    inlineSubmit.textContent = 'Send Project Brief →';
+    finalStep.appendChild(inlineSubmit);
   }
 
   function closeBrief() {
@@ -359,6 +434,11 @@ function initProjectBrief() {
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) {
+        if (result.errors) {
+          applyErrors(result.errors);
+          setStatus(result.message || 'Please review the highlighted fields.');
+          return;
+        }
         throw new Error(result.message || "We couldn't send the project brief. Please try again.");
       }
       trackEvent('project_form_submitted');
