@@ -1654,7 +1654,21 @@ body.modal-open {
 
 .projects-intro {
   margin-bottom: 1.4rem;
-  transform: translateX(30%);
+  transform: none;
+  text-align: center;
+}
+
+/* Center the section label and intro copy for the Projects (Selected Systems) area */
+.projects-section .section-label {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.projects-intro > div {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 820px;
 }
 
 .projects-intro h2,
